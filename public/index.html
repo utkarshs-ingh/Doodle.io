@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Doodle.io</title>
 </head>
 <body>
-    <p>Welcome Aditya chamar!!!</p>
+    <p>Welcome To The Doodle Game</p>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = io();
+        socket.on('connect', () => {
+            alert("Connected!!");
+        });
+
+        socket.on('disconnect', () => {
+            alert("Disconnected from the server :(");
+        });
+
+    </script>
 </body>
 </html>
