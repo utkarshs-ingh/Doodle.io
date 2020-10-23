@@ -9,16 +9,7 @@
     <p>Welcome To The Doodle Game</p>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        let socket = io();
-        socket.on('connect', () => {
-            alert("Connected!!");
-        });
+    <script src="/js/index.js"></script>
 
-        socket.on('disconnect', () => {
-            alert("Disconnected from the server :(");
-        });
-
-    </script>
 </body>
 </html>
