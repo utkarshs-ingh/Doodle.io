@@ -29,6 +29,8 @@ io.on('connection', (socket) => {
     
     socket.on('disconnect', () => { // prebuilt Event
         console.log('user left :(');
+    
+        socket.broadcast.emit('newMessage',generateMessage('Doodle.io', 'user has left the chat'));
         
     });
 });
