@@ -9,30 +9,36 @@ socket.on('disconnect', function() {
 });
 
 socket.on('newMessage', function (message) {
-    console.log('newMessage', message);
+    const template = document.querySelector('#message-template').innerHTML;
+    const html = Mustache.render(template, {
+        from: message.from,
+        text: message.text,
+        createdAt: message.createdAt
+    });
 
-    let li = document.createElement('li');
-    li.innerText = `${message.from}: ${message.text}`;
-    document.querySelector('body').appendChild(li);
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    document.querySelector('#messages').appendChild(div);
 
+    // console.log('newMessage', message);
+     
 });
 
 // socket.emit('createMessage', {
 //     from: 'client',
-//     text: 'Please Acknowledge!!'
+//     text: 'Please Acknowledge!!' 
 // },
 // function (ackMessage) {
 //     console.log(ackMessage);
 // });
 
-document.querySelector('#send-btn').addEventListener('click', function(e) {
+document.querySelector('#submit-btn').addEventListener('click', function(e) {
     e.preventDefault();
 
     socket.emit('createMessage', {
         from: 'User',
         text: document.querySelector('#message-box').value
     },
-    function(){
+    function(){});
 
-    });
 });

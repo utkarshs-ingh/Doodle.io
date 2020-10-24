@@ -17,12 +17,12 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => { 
     console.log('new connection');
 
-    socket.emit('newMessage', generateMessage('Doodle.io', 'Welcome!'));
+    socket.emit('newMessage', generateMessage('Doodle.io', 'Welcome!')); 
 
     socket.broadcast.emit('newMessage',generateMessage('Doodle.io', 'someone new just hopped in'));
 
     socket.on('createMessage', (message, callback) => { // custom Event
-        console.log("createMessage", message);
+        // console.log("createMessage", message);
         io.emit('newMessage', generateMessage(message.from, message.text)); 
         callback('Server Acknowledged.');  
     }); 
