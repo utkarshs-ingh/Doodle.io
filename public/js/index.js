@@ -40,5 +40,6 @@ document.querySelector('#submit-btn').addEventListener('click', function(e) {
         text: document.querySelector('#message-box').value
     },
     function(){});
+    document.querySelector('#message-box').value = ""
 
 });
