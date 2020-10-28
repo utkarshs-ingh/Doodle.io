@@ -5,34 +5,60 @@ const http = require('http');
 
 
 const generateMessage = require('./utils/message');
+const stringCheck = require('./utils/stringValidation');
+const Users = require("./utils/users");
+
 const publicPath = path.join(__dirname, "/../public");
 const port = process.env.PORT || 3000
 let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
+let users = new Users();
 
 app.use(express.static(publicPath)); 
 
-
+ 
 io.on('connection', (socket) => { 
     console.log('new connection');
+ 
+    socket.on('join', (params, callback) => {
+        
+        if(!stringCheck(params.name) || isNaN(params.room)) {
+            return callback("Name or Room is wrong!");
+        }
 
-    socket.emit('newMessage', generateMessage('Doodle.io', 'Welcome!')); 
+        socket.join(params.room);
+        users.removeUser(socket.id);
+        users.addUser(socket.id, params.name, params.room);
+        
+        io.to(params.room).emit('UpdateUserList', users.getUserList(params.room));
+        io.to(params.room).emit('newMessage', generateMessage('Doodle.io', `welcome ${params.name} to ${params.room}`)); 
 
-    socket.broadcast.emit('newMessage',generateMessage('Doodle.io', 'someone new just hopped in'));
+        callback();
+    });
 
     socket.on('createMessage', (message, callback) => { // custom Event
-        // console.log("createMessage", message);
-        io.emit('newMessage', generateMessage(message.from, message.text)); 
+
+        let user = users.getUser(socket.id);
+
+        if(user && stringCheck(message.text)) {
+            io.to(user.room).emit('newMessage', generateMessage(user.name, message.text)); 
+        }
+
         callback('Server Acknowledged.');  
     }); 
     
     socket.on('disconnect', () => { // prebuilt Event
         console.log('user left :(');
-    
-        socket.broadcast.emit('newMessage',generateMessage('Doodle.io', 'user has left the chat'));
-        
+        let user = users.removeUser(socket.id);
+
+        if(user){
+            io.to(user.room).emit('UpdateUserList', users.getUserList(user.room));
+            io.to(user.room).emit('newMessage',generateMessage('Doodle.io', `${user.name} has left the chat :()`)); 
+        }
+                
     });
+
 });
   
 

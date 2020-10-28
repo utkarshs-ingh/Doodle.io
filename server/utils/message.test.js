@@ -8,7 +8,7 @@ describe('Geneate Message', () => {
         text = "Dummy message",
         message = generateMessage(from, text);
 
-    expect(typeof message.createdAt).toBe('number');
+    expect(typeof message.createdAt).toBe('string');
     expect(message).toMatchObject({from, text});
     });
 });
