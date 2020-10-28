@@ -12,7 +12,11 @@ function scrollBottom(){
 
 
 socket.on('connect', function() {
-    let params = JSON.parse('{"' + decodeURI(window.location.search.substring(1)).replace(/&/g, '","').replace(/=/g, '":"').replace(/\+/g, ' ') + '"}');
+    let name_param = names;
+    let room_param = room; 
+
+    console.log(name_param, room_param);
+    let params = JSON.parse(JSON.stringify({ "name":name_param, "room": room_param}));
 
     socket.emit('join', params, function(err){
         if(err){
@@ -25,12 +29,10 @@ socket.on('connect', function() {
     })
 });
 
-socket.on('disconnect', function() {
-    console.log("Disconnected from the server :(");
-});
+socket.on('disconnect', function() {});
 
 socket.on('UpdateUserList', function (users) {
-    // console.log(users);
+    
     let ol = document.createElement('ol');
     users.forEach(function (user){
         let li = document.createElement('li');
@@ -57,27 +59,16 @@ socket.on('newMessage', function (message) {
     let msg = document.querySelector('#messages');
     msg.appendChild(div);
     scrollBottom();
-    
-    // console.log('newMessage', message);
-     
-});
 
-// socket.emit('createMessage', {
-//     from: 'client',
-//     text: 'Please Acknowledge!!' 
-// },
-// function (ackMessage) {
-//     console.log(ackMessage);
-// });
+});
 
 document.querySelector('#submit-btn').addEventListener('click', function(e) {
     e.preventDefault();
 
     socket.emit('createMessage', {
-        from: 'User',
         text: document.querySelector('#message-box').value
     },
     function(){});
-    document.querySelector('#message-box').value = ""
+    document.querySelector('#message-box').value = ""; 
 
 });

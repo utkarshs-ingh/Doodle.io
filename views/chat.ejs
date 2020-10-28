@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Game Rooms</title>
     <meta name="viewport" content="width=device-width, inital-scale=1, user-scalable=no">
     <link rel="stylesheet" href="/css/styles.css">
   </head>
@@ -35,9 +35,13 @@
         </div>
       </li>
     </script>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="/js/index.js"></script>
-    <script type="text/javascript" src="/js/libs/mustache.js"></script>
+    
+    <script src="../socket.io/socket.io.js"></script>
+    <script>
+      var names = '<%= names %>';
+      var room = '<%= room %>'
+    </script>
+    <script type="text/javascript" src="js\index.js"></script>
+    <script type="text/javascript" src="js\libs\mustache.js"></script>
   </body>
 </html>

@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
+const bodyParser = require("body-parser");
 
 
 const generateMessage = require('./utils/message');
@@ -15,20 +16,33 @@ let server = http.createServer(app);
 let io = socketIO(server);
 let users = new Users();
 
+app.set('view engine', 'ejs');
+
+app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(publicPath)); 
 
- 
+
+app.post("/", (req, res) => {
+    if (!stringCheck(req.body.name) || isNaN(req.body.room) || !stringCheck(req.body.room)) {
+        res.sendFile(publicPath + '/index.html');
+    }
+    else {
+        res.render('chat', {names: req.body.name, room: req.body.room});
+    }
+
+  });
+
+  
 io.on('connection', (socket) => { 
-    console.log('new connection');
- 
+   
     socket.on('join', (params, callback) => {
         
-        if(!stringCheck(params.name) || isNaN(params.room)) {
-            return callback("Name or Room is wrong!");
+        if(!stringCheck(params.name) || isNaN(params.room) || !stringCheck(params.room)) {
+            return callback("User name or Room number is wrong!");
         }
 
-        socket.join(params.room);
-        users.removeUser(socket.id);
+        socket.join(params.room); 
+        users.removeUser(socket.id);     
         users.addUser(socket.id, params.name, params.room);
         
         io.to(params.room).emit('UpdateUserList', users.getUserList(params.room));
@@ -49,12 +63,11 @@ io.on('connection', (socket) => {
     }); 
     
     socket.on('disconnect', () => { // prebuilt Event
-        console.log('user left :(');
         let user = users.removeUser(socket.id);
 
         if(user){
             io.to(user.room).emit('UpdateUserList', users.getUserList(user.room));
-            io.to(user.room).emit('newMessage',generateMessage('Doodle.io', `${user.name} has left the chat :()`)); 
+            io.to(user.room).emit('newMessage',generateMessage('Doodle.io', `${user.name} has left the chat :(`)); 
         }
                 
     });
