@@ -1,7 +1,7 @@
 let socket = io();
 
 
-function scrollBottom(){
+function scrollBottom() {
     const elem = document.querySelector('#messages');
     const scrollDiff = (elem.scrollHeight - elem.scrollTop) - elem.clientHeight;
 
@@ -10,21 +10,30 @@ function scrollBottom(){
     }
 }
 
+function messageValue(message) {
+    const template = document.querySelector('#message-template').innerHTML;
+    const html = Mustache.render(template, {
+        from: message.from,
+        text: message.text,
+        createdAt: message.createdAt
+    });
+
+    const div = document.createElement('div');
+    div.innerHTML = html;
+
+    return div;
+}
 
 socket.on('connect', function() {
-    let name_param = names;
+    let name_param = userName;
     let room_param = room; 
 
-    console.log(name_param, room_param);
     let params = JSON.parse(JSON.stringify({ "name":name_param, "room": room_param}));
 
     socket.emit('join', params, function(err){
         if(err){
             alert(err);
             window.location.href = '/';
-        }
-        else{
-            
         }
     })
 });
@@ -47,19 +56,30 @@ socket.on('UpdateUserList', function (users) {
 });
 
 socket.on('newMessage', function (message) {
-    const template = document.querySelector('#message-template').innerHTML;
-    const html = Mustache.render(template, {
-        from: message.from,
-        text: message.text,
-        createdAt: message.createdAt
-    });
 
-    const div = document.createElement('div');
-    div.innerHTML = html;
+    const div = messageValue(message);
+    div.setAttribute("style", "border-radius: 5px;background: lightgray; width: 400px; margin-top: 5px;");
     let msg = document.querySelector('#messages');
     msg.appendChild(div);
     scrollBottom();
+});
 
+socket.on('leaveMessage', function (message) {
+    
+    const div = messageValue(message);
+    div.setAttribute("style", "border-radius: 5px;background: red; width: 400px; margin-top: 5px;");
+    let msg = document.querySelector('#messages');
+    msg.appendChild(div);
+    scrollBottom();
+});
+
+socket.on('joinMessage', function (message) {
+    
+    const div = messageValue(message);
+    div.setAttribute("style", "border-radius: 5px;background: lightgreen; width: 400px; margin-top: 5px;");
+    let msg = document.querySelector('#messages');
+    msg.appendChild(div);
+    scrollBottom();
 });
 
 document.querySelector('#submit-btn').addEventListener('click', function(e) {

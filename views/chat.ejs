@@ -2,13 +2,14 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Game Rooms</title>
+    <title>Doodle Room</title>
     <meta name="viewport" content="width=device-width, inital-scale=1, user-scalable=no">
     <link rel="stylesheet" href="/css/styles.css">
   </head>
   <body class="chat">
 
     <div class="chat__sidebar">
+      <h3>Room ID: <%= room %></h3>
       <h3>People</h3>
       <div id="users"></div>
     </div>
@@ -38,7 +39,7 @@
     
     <script src="../socket.io/socket.io.js"></script>
     <script>
-      var names = '<%= names %>';
+      var userName = '<%= names %>';
       var room = '<%= room %>'
     </script>
     <script type="text/javascript" src="js\index.js"></script>

@@ -30,7 +30,7 @@ app.post("/", (req, res) => {
         res.render('chat', {names: req.body.name, room: req.body.room});
     }
 
-  });
+});
 
   
 io.on('connection', (socket) => { 
@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
         users.addUser(socket.id, params.name, params.room);
         
         io.to(params.room).emit('UpdateUserList', users.getUserList(params.room));
-        io.to(params.room).emit('newMessage', generateMessage('Doodle.io', `welcome ${params.name} to ${params.room}`)); 
+        io.to(params.room).emit('joinMessage', generateMessage('Doodle.io', `welcome ${params.name} to ${params.room}`)); 
 
         callback();
     });
@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
 
         if(user){
             io.to(user.room).emit('UpdateUserList', users.getUserList(user.room));
-            io.to(user.room).emit('newMessage',generateMessage('Doodle.io', `${user.name} has left the chat :(`)); 
+            io.to(user.room).emit('leaveMessage',generateMessage('Doodle.io', `${user.name} has left the chat :(`)); 
         }
                 
     });
