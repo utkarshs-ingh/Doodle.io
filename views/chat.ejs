@@ -14,6 +14,9 @@
       <div id="users"></div>
     </div>
 
+     <!-- The Modal -->
+    <div class="modal" id="myModal"></div>
+
     <div class="chat__main">
       <ol id="messages" class="chat__messages"></ol>
 
@@ -21,6 +24,7 @@
         <form id="message-form">
           <input id="message-box" type="text" placeholder="Message" autofocus autocomplete="off"/>
           <button id="submit-btn">Send</button>
+          <button id="game-btn">ready</button>
         </form>
       </div>
     </div>
@@ -35,6 +39,14 @@
           <p>{{text}}</p>
         </div>
       </li>
+    </script>
+
+    <script id="modal-template" type="text/template">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>{{player_name}}</p>
+        </div>
+      </div>
     </script>
     
     <script src="../socket.io/socket.io.js"></script>

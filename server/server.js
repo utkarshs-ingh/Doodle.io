@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const generateMessage = require('./utils/message');
 const stringCheck = require('./utils/stringValidation');
 const Users = require("./utils/users");
+const player = require("./utils/game");
 
 const publicPath = path.join(__dirname, "/../public");
 const port = process.env.PORT || 3000
@@ -21,7 +22,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(publicPath)); 
 
-
+var player_num = 0; 
 app.post("/", (req, res) => {
     if (!stringCheck(req.body.name) || isNaN(req.body.room) || !stringCheck(req.body.room)) {
         res.sendFile(publicPath + '/index.html');
@@ -61,6 +62,18 @@ io.on('connection', (socket) => {
         callback('Server Acknowledged.');  
     }); 
     
+    socket.on('gameTime', (callback) => { 
+        let user = users.getUser(socket.id);
+        let players = users.getUserList(user.room);
+        
+        var nextPlayer = players[(player_num++)%players.length];
+
+        if(nextPlayer) {
+            io.to(user.room).emit('gameMessage', generateMessage('Doodle.io', `${nextPlayer} is drawing!!!`)); 
+        }
+        return callback(nextPlayer);
+    }); 
+
     socket.on('disconnect', () => { 
         let user = users.removeUser(socket.id);
 

@@ -24,6 +24,37 @@ function messageValue(message) {
     return div;
 }
 
+
+function modal(name) {
+    const template = document.querySelector('#modal-template').innerHTML;
+    var output = Mustache.render(template,{
+        player_name: name + " is Drawing!!"
+    });
+    
+    const div = document.createElement('div');
+    div.innerHTML = output;
+
+    let msg = document.querySelector('#myModal');
+    msg.appendChild(div);
+    
+    var modal = document.getElementById("myModal");
+    var span = document.getElementsByClassName("close")[0];
+
+    modal.style.display = "block";
+
+    span.addEventListener('click', function() {
+        modal.style.display = "none";
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    });
+
+
+}
+
 socket.on('connect', function() {
     let name_param = userName;
     let room_param = room; 
@@ -82,6 +113,15 @@ socket.on('joinMessage', function (message) {
     scrollBottom();
 });
 
+socket.on('gameMessage', function (message) {
+    
+    const div = messageValue(message);
+    div.setAttribute("style", "border-radius: 5px;background: lightblue; width: 400px; margin-top: 5px;");
+    let msg = document.querySelector('#messages');
+    msg.appendChild(div);
+    scrollBottom();
+});
+
 document.querySelector('#submit-btn').addEventListener('click', function (e) {
     e.preventDefault();
 
@@ -91,4 +131,12 @@ document.querySelector('#submit-btn').addEventListener('click', function (e) {
     function () { });
     document.querySelector('#message-box').value = ""; 
 
+});
+
+document.querySelector('#game-btn').addEventListener('click', function (e) {
+    e.preventDefault();
+    
+    socket.emit('gameTime', function (nextPlayer) {
+        modal(nextPlayer);
+    });
 });
