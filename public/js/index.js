@@ -82,13 +82,13 @@ socket.on('joinMessage', function (message) {
     scrollBottom();
 });
 
-document.querySelector('#submit-btn').addEventListener('click', function(e) {
+document.querySelector('#submit-btn').addEventListener('click', function (e) {
     e.preventDefault();
 
     socket.emit('createMessage', {
         text: document.querySelector('#message-box').value
     },
-    function(){});
+    function () { });
     document.querySelector('#message-box').value = ""; 
 
 });

@@ -11,13 +11,13 @@ const Users = require("./utils/users");
 
 const publicPath = path.join(__dirname, "/../public");
 const port = process.env.PORT || 3000
+
 let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
 let users = new Users();
 
 app.set('view engine', 'ejs');
-
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(publicPath)); 
 
@@ -29,7 +29,6 @@ app.post("/", (req, res) => {
     else {
         res.render('chat', {names: req.body.name, room: req.body.room});
     }
-
 });
 
   
@@ -51,7 +50,7 @@ io.on('connection', (socket) => {
         callback();
     });
 
-    socket.on('createMessage', (message, callback) => { // custom Event
+    socket.on('createMessage', (message, callback) => { 
 
         let user = users.getUser(socket.id);
 
@@ -62,16 +61,14 @@ io.on('connection', (socket) => {
         callback('Server Acknowledged.');  
     }); 
     
-    socket.on('disconnect', () => { // prebuilt Event
+    socket.on('disconnect', () => { 
         let user = users.removeUser(socket.id);
 
         if(user){
             io.to(user.room).emit('UpdateUserList', users.getUserList(user.room));
             io.to(user.room).emit('leaveMessage',generateMessage('Doodle.io', `${user.name} has left the chat :(`)); 
         }
-                
     });
-
 });
   
 
