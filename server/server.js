@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
         var nextPlayer = players[(player_num++)%players.length];
 
         if(nextPlayer) {
-            io.to(user.room).emit('gameMessage', generateMessage('Doodle.io', `${nextPlayer} is drawing!!!`)); 
+            io.to(user.room).emit('gameMessage', generateMessage('Doodle.io', `${nextPlayer} is drawing!!!.....`)); 
         }
         return callback(nextPlayer);
     }); 
