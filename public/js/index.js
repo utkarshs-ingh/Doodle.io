@@ -1,5 +1,20 @@
 let socket = io();
+let gameON = false;
 
+let timeDisplay = document.getElementById('timer');
+
+function timer(timeLeft) {
+   
+    if (timeLeft == -1) {
+      alert("Round Over...");
+      timeDisplay.innerHTML = "";
+      return;
+    } 
+    else {
+        timeDisplay.innerHTML = timeLeft + ' seconds remaining';
+        return setTimeout(() => {timer(--timeLeft)}, 1000);
+    }
+} 
 
 function scrollBottom() {
     const elem = document.querySelector('#messages');
@@ -113,15 +128,35 @@ socket.on('joinMessage', function (message) {
 
 socket.on('gameMessage', function (message) {
     modal(message);
+    gameON = true;
+    setTimeout(() => {gameON = false}, 30000);
+    timer(30);
+});
+
+socket.on('winMessage', function (message) {
+    const div = messageValue(message);
+    div.setAttribute("style", "border-radius: 5px;background: yellow; width: 400px; margin-top: 5px;");
+    let msg = document.querySelector('#messages');
+    msg.appendChild(div);
+    scrollBottom();
 });
 
 document.querySelector('#submit-btn').addEventListener('click', function (e) {
     e.preventDefault();
 
-    socket.emit('createMessage', {
-        text: document.querySelector('#message-box').value
-    },
-    function () { });
+    if(gameON == false) {
+        socket.emit('createMessage', {
+            text: document.querySelector('#message-box').value
+        },
+        function () { });
+    }
+    else if(gameON == true) {
+        socket.emit('gamechecker', {
+            text: document.querySelector('#message-box').value
+        },
+        function () { });
+    }
+
     document.querySelector('#message-box').value = ""; 
 
 });
@@ -129,5 +164,6 @@ document.querySelector('#submit-btn').addEventListener('click', function (e) {
 document.querySelector('#game-btn').addEventListener('click', function (e) {
     e.preventDefault();
     
-    socket.emit('gameTime', function (nextPlayer) { });
+    socket.emit('gameTime', {});
+    
 });

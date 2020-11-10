@@ -20,6 +20,10 @@ class Users {
         return this.users.filter((user) => user.id === id)[0];
     }
 
+    getUserByName(name) {
+        return this.users.filter((user) => user.name === name)[0];
+    }
+
     removeUser(id) {
         let user = this.getUser(id);
         if(user){

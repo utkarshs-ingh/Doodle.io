@@ -16,7 +16,7 @@ const port = process.env.PORT || 3000
 let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
-let users = new Users();
+var users = new Users();
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true})); 
@@ -62,16 +62,29 @@ io.on('connection', (socket) => {
         callback('Server Acknowledged.');  
     }); 
     
-    socket.on('gameTime', (callback) => { 
+    socket.on('gameTime', (message) => { 
         let user = users.getUser(socket.id);
         let players = users.getUserList(user.room);
         
-        var nextPlayer = players[(player_num++)%players.length];
-
+        let nextPlayer = players[(player_num++)%players.length];
+        let currPlayer = users.getUserByName(nextPlayer);
+                
         if(nextPlayer) {
             io.to(user.room).emit('gameMessage', generateMessage('Doodle.io', `${nextPlayer} is drawing!!!.....`)); 
+            io.to(currPlayer.id).emit('newMessage', generateMessage('Doodle.io', `Draw aalo`));
         }
-        return callback(nextPlayer);
+    }); 
+
+
+    socket.on('gamechecker', (message) => { 
+        let user = users.getUser(socket.id);
+       
+        if(message.text == 'hh') {
+            io.to(user.room).emit('winMessage', generateMessage('Doodle.io', `${user.name} got it!!!.....`));
+        }
+        else {
+            io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+        }
     }); 
 
     socket.on('disconnect', () => { 

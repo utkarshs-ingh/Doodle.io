@@ -74,13 +74,15 @@ button:disabled {
     background:-webkit-linear-gradient(125deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%);background:-o-linear-gradient(125deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%);background:-ms-linear-gradient(125deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%);background:linear-gradient(325deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%)
 }
 .chat__footer,.chat__sidebar li {
-    background:#e6eaee;
+    background:#e9eee6;
     padding:10px
 }
 .chat__sidebar h3 {
     color:#e6eaee;
+    background: green;
     margin:10px 20px;
-    text-align:left
+    text-align:left;
+    padding:10px
 }
 .chat__sidebar li {
     border:1px solid #e1e1e1;

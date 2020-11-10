@@ -1,13 +1,14 @@
-const Users = require("./users");
 
 
-function game(room) {
-    let users = new Users();
-    let players = users.getUserList(room);
-    console.log(players);
-    // 
-    
-    return players;    
+function game(users, id, message) {
+         
+    let user = users.getUser(id);
+    let players = users.getUserList(user.room);
+    console.log(message.text);
+    if(message.text == 'hh') {
+        console.log(message.text);
+    }    
+    // return players;    
 }
 
 module.exports = (game);
