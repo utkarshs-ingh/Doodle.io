@@ -1,14 +1,7 @@
-
-
-function game(users, id, message) {
-         
-    let user = users.getUser(id);
-    let players = users.getUserList(user.room);
-    console.log(message.text);
-    if(message.text == 'hh') {
-        console.log(message.text);
-    }    
-    // return players;    
+const randomWords = require('random-words');
+function guessWord() {
+    let word = randomWords();
+    return word;
 }
 
-module.exports = (game);
+module.exports = (guessWord);

@@ -6,12 +6,12 @@ let timeDisplay = document.getElementById('timer');
 function timer(timeLeft) {
    
     if (timeLeft == -1) {
-      alert("Round Over...");
+      modal("Round Over...");
       timeDisplay.innerHTML = "";
       return;
     } 
     else {
-        timeDisplay.innerHTML = timeLeft + ' seconds remaining';
+        timeDisplay.innerHTML = timeLeft + ' seconds Left';
         return setTimeout(() => {timer(--timeLeft)}, 1000);
     }
 } 
@@ -44,7 +44,7 @@ function modal(message) {
 
     const template = document.querySelector('#modal-template').innerHTML;
     var output = Mustache.render(template,{
-        player_name: message.text
+        player_name: message
     });
     
     let msg = document.getElementById('myModal');
@@ -127,10 +127,10 @@ socket.on('joinMessage', function (message) {
 });
 
 socket.on('gameMessage', function (message) {
-    modal(message);
+    modal(message.text);
     gameON = true;
-    setTimeout(() => {gameON = false}, 30000);
-    timer(30);
+    setTimeout(() => {gameON = false}, 15000);
+    timer(15);
 });
 
 socket.on('winMessage', function (message) {

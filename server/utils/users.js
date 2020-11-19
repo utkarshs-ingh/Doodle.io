@@ -5,7 +5,7 @@ class Users {
     }
 
     addUser(id, name, room) {
-        let user = {id, name, room};
+        let user = {id, name, room, score:0, flag: 0};
         this.users.push(user);
         return user;
     }
@@ -20,8 +20,8 @@ class Users {
         return this.users.filter((user) => user.id === id)[0];
     }
 
-    getUserByName(name) {
-        return this.users.filter((user) => user.name === name)[0];
+    getUserByName(name, room) {
+        return this.users.filter((user) => user.name === name && user.room === room)[0];
     }
 
     removeUser(id) {
@@ -31,6 +31,16 @@ class Users {
         }
 
         return user;
+    }
+
+    updateScore(name, room) {
+        let player = this.users.filter((user) => user.name === name && user.room === room)[0];
+
+        if(player.flag == 0) {
+            player.score += 50;
+            player.flag = 1;
+        }
+        console.log(player);
     }
 
 }

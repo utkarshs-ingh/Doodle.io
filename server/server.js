@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 const generateMessage = require('./utils/message');
 const stringCheck = require('./utils/stringValidation');
 const Users = require("./utils/users");
-const player = require("./utils/game");
+const gameWord = require("./utils/game");
 
 const publicPath = path.join(__dirname, "/../public");
 const port = process.env.PORT || 3000
@@ -23,6 +23,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(publicPath)); 
 
 var player_num = 0; 
+var guessWord = "";
+
 app.post("/", (req, res) => {
     if (!stringCheck(req.body.name) || isNaN(req.body.room) || !stringCheck(req.body.room)) {
         res.sendFile(publicPath + '/index.html');
@@ -62,25 +64,28 @@ io.on('connection', (socket) => {
         callback('Server Acknowledged.');  
     }); 
     
-    socket.on('gameTime', (message) => { 
+    socket.on('gameTime', () => { 
         let user = users.getUser(socket.id);
         let players = users.getUserList(user.room);
         
         let nextPlayer = players[(player_num++)%players.length];
-        let currPlayer = users.getUserByName(nextPlayer);
+        let currPlayer = users.getUserByName(nextPlayer, user.room);
                 
         if(nextPlayer) {
-            io.to(user.room).emit('gameMessage', generateMessage('Doodle.io', `${nextPlayer} is drawing!!!.....`)); 
-            io.to(currPlayer.id).emit('newMessage', generateMessage('Doodle.io', `Draw aalo`));
+            io.to(user.room).emit('gameMessage', generateMessage('Doodle.io', `${nextPlayer} is drawing!!!.....`));
+            guessWord =  gameWord();
+            io.to(currPlayer.id).emit('gameMessage', generateMessage('Doodle.io', `Draw ${guessWord}`));
         }
     }); 
 
 
     socket.on('gamechecker', (message) => { 
+        
         let user = users.getUser(socket.id);
-       
-        if(message.text == 'hh') {
-            io.to(user.room).emit('winMessage', generateMessage('Doodle.io', `${user.name} got it!!!.....`));
+
+        if(message.text == guessWord) {
+            users.updateScore(user.name, user.room);
+            io.to(user.room).emit('winMessage', generateMessage('Doodle.io', `${user.name} guessed it!!!.....`));
         }
         else {
             io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
