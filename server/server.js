@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 
 
 const generateMessage = require('./utils/message');
@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
     socket.on('gameTime', () => { 
         let user = users.getUser(socket.id);
         let players = users.getUserList(user.room);
-        
+
         let nextPlayer = players[(player_num++)%players.length];
         let currPlayer = users.getUserByName(nextPlayer, user.room);
                 
@@ -90,6 +90,9 @@ io.on('connection', (socket) => {
         else {
             io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
         }
+        socket.on('gameOver', () => {
+            users.updateScore(user.name, user.room);
+        });
     }); 
 
     socket.on('disconnect', () => { 

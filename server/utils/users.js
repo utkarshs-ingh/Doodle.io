@@ -35,12 +35,15 @@ class Users {
 
     updateScore(name, room) {
         let player = this.users.filter((user) => user.name === name && user.room === room)[0];
-
+        let users = this.users.filter((user) => user.room === room);
         if(player.flag == 0) {
             player.score += 50;
             player.flag = 1;
         }
-        console.log(player);
+        if(player.flag == 1) {
+            users.map((user) => user.flag = 0);
+        }
+        // console.log(player);
     }
 
 }

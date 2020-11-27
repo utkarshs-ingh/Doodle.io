@@ -129,13 +129,14 @@ socket.on('joinMessage', function (message) {
 socket.on('gameMessage', function (message) {
     modal(message.text);
     gameON = true;
-    setTimeout(() => {gameON = false}, 15000);
-    timer(15);
+    let limit = 15;
+    setTimeout(() => {gameON = false; socket.emit('gameOver', {})}, limit*1000);
+    timer(limit);
 });
 
 socket.on('winMessage', function (message) {
     const div = messageValue(message);
-    div.setAttribute("style", "border-radius: 5px;background: yellow; width: 400px; margin-top: 5px;");
+    div.setAttribute("style", "border-radius: 5px;background: #282c34; width: 400px; margin-top: 5px;");
     let msg = document.querySelector('#messages');
     msg.appendChild(div);
     scrollBottom();
