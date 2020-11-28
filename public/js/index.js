@@ -6,7 +6,6 @@ let timeDisplay = document.getElementById('timer');
 function timer(timeLeft) {
    
     if (timeLeft == -1) {
-      modal("Round Over...");
       timeDisplay.innerHTML = "";
       return;
     } 
@@ -126,17 +125,15 @@ socket.on('joinMessage', function (message) {
     scrollBottom();
 });
 
-socket.on('gameMessage', function (message) {
+socket.on('gameMessage', function (limit, gameStatus, message) {
     modal(message.text);
-    gameON = true;
-    let limit = 15;
-    setTimeout(() => {gameON = false; socket.emit('gameOver', {})}, limit*1000);
-    timer(limit);
+    gameON = gameStatus;
+    if(gameON) timer(limit);
 });
 
 socket.on('winMessage', function (message) {
     const div = messageValue(message);
-    div.setAttribute("style", "border-radius: 5px;background: #282c34; width: 400px; margin-top: 5px;");
+    div.setAttribute("style", "border-radius: 5px;background: yellow; width: 400px; margin-top: 5px;");
     let msg = document.querySelector('#messages');
     msg.appendChild(div);
     scrollBottom();
