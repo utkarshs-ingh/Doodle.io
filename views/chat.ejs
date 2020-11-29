@@ -5,21 +5,25 @@
     <title>Doodle Room</title>
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="stylesheet" href="/css/styles.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
   <body class="chat">
 
     <div class="chat__sidebar">
+      <h2><%= names %></h2>
       <h3>Room ID: <%= room %></h3>
-      <h3>Username: <%= names %></h3>
-      <h3>People</h3>
       <div id="users"></div>
-      <div id="timer"></div>
     </div>
 
-     <!-- The Modal -->
     <div class="modal" id="myModal"></div>
-
     <div class="chat__main">
+      <div class="canvas" id="canvas">
+        <div class="timer" id="timer">
+          <i class='far fa-clock' style='font-size:15px'></i>
+        </div>
+        <canvas class="myCanvas" id="myCanvas" style="border:2px solid black"></canvas>
+      </div>
       <ol id="messages" class="chat__messages"></ol>
 
       <div class="chat__footer">
@@ -29,7 +33,7 @@
           <button id="game-btn">ready</button>
         </form>
       </div>
-    </div>
+    
 
     <script id="message-template" type="text/template">
       <li class="message">
@@ -57,6 +61,7 @@
       var room = '<%= room %>'
     </script>
     <script type="text/javascript" src="js\index.js"></script>
+    <script type="text/javascript" src="js\libs\canvas.js"></script>
     <script type="text/javascript" src="js\libs\mustache.js"></script>
   </body>
 </html>

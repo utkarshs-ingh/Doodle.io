@@ -70,6 +70,7 @@ io.on('connection', (socket) => {
 
         let user = users.getUser(socket.id);
         let players = users.getUserList(user.room);
+        players = players.map((obj) => obj.name);
 
         let nextPlayer = players[(player_num++)%players.length];
         let currPlayer = users.getUserByName(nextPlayer, user.room);
@@ -81,7 +82,13 @@ io.on('connection', (socket) => {
 
             io.to(currPlayer.id).emit('gameMessage', timeLimit, gameStatus, generateMessage('Doodle.io', `Draw ${guessWord}`));
         }
-        setTimeout(() => { io.to(user.room).emit('gameMessage', 0, !gameStatus, generateMessage('Doodle.io', 'Round over...')); }, timeLimit*1000);
+        setTimeout(() => { 
+            io.to(user.room).emit('gameMessage', 0, !gameStatus, generateMessage('Doodle.io', 'Round over...')); 
+            
+            users.resetScore(user.room);
+
+            io.to(user.room).emit('UpdateUserList', users.getUserList(user.room));
+        }, timeLimit*1000);
     }); 
 
 
@@ -96,9 +103,12 @@ io.on('connection', (socket) => {
         else {
             io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
         }
-        socket.on('gameOver', () => {
-            users.updateScore(user.name, user.room);
-        });
+    }); 
+
+    socket.on('canvas-data', (data) => { 
+        let user = users.getUser(socket.id);
+        console.log(data);
+        socket.broadcast.to(user.room).emit('canvas-draw', data);
     }); 
 
     socket.on('disconnect', () => { 

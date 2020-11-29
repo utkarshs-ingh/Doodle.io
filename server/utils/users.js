@@ -12,8 +12,7 @@ class Users {
 
     getUserList(room) {
         let users = this.users.filter((user) => user.room === room);
-        let nameArray = users.map((user) => user.name);
-        return nameArray;
+        return users;
     }
     
     getUser(id) {
@@ -35,15 +34,16 @@ class Users {
 
     updateScore(name, room) {
         let player = this.users.filter((user) => user.name === name && user.room === room)[0];
-        let users = this.users.filter((user) => user.room === room);
+        
         if(player.flag == 0) {
             player.score += 50;
             player.flag = 1;
         }
-        if(player.flag == 1) {
-            users.map((user) => user.flag = 0);
-        }
-        // console.log(player);
+    }
+
+    resetScore(room) {
+        let users = this.users.filter((user) => user.room === room);
+        users.map((user) => user.flag = 0);
     }
 
 }

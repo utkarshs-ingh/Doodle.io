@@ -63,6 +63,20 @@ button:disabled {
     border:1px solid #e1e1e1;
     padding:10px
 }
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+    position: sticky;
+    top: 0;
+}
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
 .chat {
     display:flex
 }
@@ -70,8 +84,10 @@ button:disabled {
     overflow-y:scroll;
     width:260px;
     height:100vh;
-    background:-moz-linear-gradient(125deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%);background:-webkit-gradient(linear,left top,right bottom,color-stop(0,rgba(49,84,129,1)),color-stop(100%,rgba(39,107,130,1)));
-    background:-webkit-linear-gradient(125deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%);background:-o-linear-gradient(125deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%);background:-ms-linear-gradient(125deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%);background:linear-gradient(325deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%)
+    background:-moz-linear-gradient(125deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%);
+    background:-webkit-gradient(linear,left top,right bottom,color-stop(0,rgba(49,84,129,1)),color-stop(100%,rgba(39,107,130,1)));
+    background:-webkit-linear-gradient(125deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%);background:-o-linear-gradient(125deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%);
+    background:-ms-linear-gradient(125deg,rgb(26, 107, 134) 0,rgba(49,84,129,1) 100%);background:linear-gradient(325deg,rgba(39,107,130,1) 0,rgba(49,84,129,1) 100%)
 }
 .chat__footer,.chat__sidebar li {
     background:#e9eee6;
@@ -80,8 +96,18 @@ button:disabled {
 .chat__sidebar h3 {
     color:#e6eaee;
     background: green;
+    border-radius: 5px;
     margin:10px 20px;
-    text-align:left;
+    text-align:center;
+    padding:10px
+}
+.chat__sidebar h2 {
+    color:#e6eaee;
+    font-size: x-large;
+    background: gray;
+    border-radius: 5px;
+    margin:10px 20px;
+    text-align:center;
     padding:10px
 }
 .chat__sidebar li {
@@ -91,20 +117,52 @@ button:disabled {
 }
 .chat__main {
     display:flex;
-    flex-direction:column;
+    flex-direction: row;
     height:100vh;
     width:100%
+}
+.canvas {
+    background: rgb(0, 84, 84);
+    width: 60%;
+    height:89vh;
+    padding:10px;
+    margin: 5px;
+    border-radius: 20px;
+}
+.myCanvas {
+    margin-bottom: 1%;
+    background: rgba(236, 227, 227, 0.829);
+    text-align: center;
+    padding: 5px;
+    border-radius: 20px;
+    width: 100%;
+    height: 93%;
+    cursor: crosshair;
+}
+.timer {
+    margin: 0 auto;
+    margin-bottom: 1%;
+    font-size:20px;
+    background: red;
+    text-align: center;
+    padding: 5px;
+    border-radius: 20px;
+    width: 60%
 }
 .chat__messages {
     flex-grow:1;
     overflow-y:auto;
     -webkit-overflow-scrolling:touch;
+    height:90vh;
     padding-bottom:10px;
     margin: 10px
 }
 .chat__footer {
     display:flex;
-    flex-shrink:0
+    flex-shrink:0;
+    width: 80%;
+    position: absolute;
+    bottom: 0
 }
 .chat__footer form {
     flex-grow:1;
@@ -134,26 +192,26 @@ button:disabled {
     font-style: italic;
 }
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 100px; 
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
 }
   
   /* Modal Content */
 .modal-content {
     background-color: #fefefe;
-    margin: auto;
+    margin: 0 auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+    border-radius: 5px;
+    width: 40%;
 }
   
   /* The Close Button */
@@ -173,6 +231,12 @@ button:disabled {
 @media (max-width:600px) {
     *{
         font-size:1rem
+    }
+    html {
+        zoom: 0.8; 
+        -moz-transform: scale(0.8);
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
     }
     .chat__sidebar {display:none}
     .chat__footer {flex-direction:column}

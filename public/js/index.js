@@ -1,4 +1,4 @@
-let socket = io();
+var socket = io();
 let gameON = false;
 
 let timeDisplay = document.getElementById('timer');
@@ -6,11 +6,12 @@ let timeDisplay = document.getElementById('timer');
 function timer(timeLeft) {
    
     if (timeLeft == -1) {
-      timeDisplay.innerHTML = "";
+      timeDisplay.innerHTML = "<i class='far fa-clock' style='font-size:20px'></i>";
+      document.querySelector('#game-btn').removeAttribute('disabled');
       return;
     } 
     else {
-        timeDisplay.innerHTML = timeLeft + ' seconds Left';
+        timeDisplay.innerHTML = timeLeft;
         return setTimeout(() => {timer(--timeLeft)}, 1000);
     }
 } 
@@ -63,8 +64,6 @@ function modal(message) {
             modal.style.display = "none";
         }
     });
-
-
 }
 
 socket.on('connect', function() {
@@ -84,9 +83,11 @@ socket.on('connect', function() {
 socket.on('disconnect', function() {});
 
 socket.on('UpdateUserList', function (users) {
-    
+
+    let players = Object.keys(users).map((e) => users[e].name + " :: " + users[e].score);
+
     let ol = document.createElement('ol');
-    users.forEach(function (user){
+    players.forEach(function (user) {
         let li = document.createElement('li');
         li.innerHTML = user;
         ol.appendChild(li);
@@ -128,7 +129,10 @@ socket.on('joinMessage', function (message) {
 socket.on('gameMessage', function (limit, gameStatus, message) {
     modal(message.text);
     gameON = gameStatus;
-    if(gameON) timer(limit);
+    if(gameON) {
+        document.querySelector('#game-btn').setAttribute("disabled", "disabled");
+        timer(limit);
+    }
 });
 
 socket.on('winMessage', function (message) {
@@ -138,6 +142,17 @@ socket.on('winMessage', function (message) {
     msg.appendChild(div);
     scrollBottom();
 });
+
+socket.on('canvas-draw', function (data) {
+    var image = new Image();
+    let canvas = document.querySelector("#myCanvas");
+    let ctx = canvas.getContext('2d');
+    image.onload = function() {
+        ctx.drawImage(image, 0, 0);
+    };
+    image.src = data;
+});
+
 
 document.querySelector('#submit-btn').addEventListener('click', function (e) {
     e.preventDefault();
