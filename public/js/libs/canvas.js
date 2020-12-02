@@ -1,15 +1,15 @@
 window.addEventListener('load', ()=>{ 
-		InitDrawing();
+        InitDrawing();
 }); 
-	
-function InitDrawing() {
-	var canvas = document.querySelector('#myCanvas');
-	var ctx = canvas.getContext('2d');
 
-    var sketch = document.querySelector('#canvas');
-    var sketch_style = getComputedStyle(sketch);
-    canvas.width = parseInt(sketch_style.getPropertyValue('width'));
-    canvas.height = parseInt(sketch_style.getPropertyValue('height'));
+var canvas = document.getElementById('myCanvas');
+var ctx = canvas.getContext('2d');
+var sketch = document.querySelector('#canvas');
+var sketch_style = getComputedStyle(sketch);
+canvas.width = parseInt(sketch_style.getPropertyValue('width'));
+canvas.height = parseInt(sketch_style.getPropertyValue('height'));
+
+function InitDrawing() {
 
     var mouse = {x: 0, y: 0};
     var last_mouse = {x: 0, y: 0};
@@ -29,25 +29,24 @@ function InitDrawing() {
 
     canvas.addEventListener('mousedown', function(e) {
         canvas.addEventListener('mousemove', onPaint, false);
+        canvas.addEventListener('mousemove', draw, false);
     }, false);
 
     canvas.addEventListener('mouseup', function() {
         canvas.removeEventListener('mousemove', onPaint, false);
     }, false);
 
-	// var root;
+    var draw = function() {
+        var base64ImageData = canvas.toDataURL("image/png");
+		socket.emit("canvas-data", base64ImageData);
+    }
+	
     var onPaint = function() {
         ctx.beginPath();
         ctx.moveTo(last_mouse.x, last_mouse.y);
         ctx.lineTo(mouse.x, mouse.y);
         ctx.closePath();
 		ctx.stroke();
-		
-		// if(this.root != undefined) clearTimeout(this.root);
-		var root = setTimeout(function () {
-			var base64ImageData = canvas.toDataUrl("image/png");
-			socket.emit("canvas-data", base64ImageData);
-		}, 1000);
     };
 
 };

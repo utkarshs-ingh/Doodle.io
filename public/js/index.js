@@ -145,10 +145,8 @@ socket.on('winMessage', function (message) {
 
 socket.on('canvas-draw', function (data) {
     var image = new Image();
-    let canvas = document.querySelector("#myCanvas");
-    let ctx = canvas.getContext('2d');
     image.onload = function() {
-        ctx.drawImage(image, 0, 0);
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
     };
     image.src = data;
 });

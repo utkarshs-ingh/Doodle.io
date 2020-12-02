@@ -107,7 +107,6 @@ io.on('connection', (socket) => {
 
     socket.on('canvas-data', (data) => { 
         let user = users.getUser(socket.id);
-        console.log(data);
         socket.broadcast.to(user.room).emit('canvas-draw', data);
     }); 
 
