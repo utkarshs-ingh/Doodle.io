@@ -122,7 +122,7 @@ button:disabled {
     width:100%
 }
 .canvas {
-    background: rgb(0, 84, 84);
+    background-color: rgb(0, 84, 84);
     width: 60%;
     height:89vh;
     padding:10px;
@@ -131,7 +131,7 @@ button:disabled {
 }
 .myCanvas {
     margin-bottom: 1%;
-    background: rgba(236, 227, 227, 0.829);
+    background-color: white;
     text-align: center;
     padding: 5px;
     border-radius: 20px;
@@ -148,6 +148,15 @@ button:disabled {
     padding: 5px;
     border-radius: 20px;
     width: 60%
+}
+#palette {
+    position: absolute;
+    margin: 0.5%;
+}
+#palette button {
+    border-radius: 5px;
+    padding: 2px;
+    background-color: #1F4C69;
 }
 .chat__messages {
     flex-grow:1;
