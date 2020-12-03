@@ -56,8 +56,8 @@ function InitDrawing() {
         ['touchmove','mousemove'].forEach(event => canvas.addEventListener(event, draw, false));
     }, false));
 
-    ['touchend','mouseup'].forEach(event => canvas.addEventListener(event, function() {
-        ['touchmove','mousemove'].forEach(event => canvas.addEventListener(event, onPaint, false));
+    ['touchcancel','touchend','mouseup'].forEach(event => canvas.addEventListener(event, function() {
+        ['touchmove','mousemove'].forEach(event => canvas.removeEventListener(event, onPaint, false));
     }, false));
 
     
