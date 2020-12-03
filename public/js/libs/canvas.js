@@ -40,25 +40,25 @@ function InitDrawing() {
         ctx.lineWidth = 3;
     }, false);
 
-    canvas.addEventListener('mousemove', function(e) {
+    ['touchmove','mousemove'].forEach(event => canvas.addEventListener(event, function(e) {
         last_mouse.x = mouse.x;
         last_mouse.y = mouse.y;
 
         mouse.x = e.pageX - this.offsetLeft;
         mouse.y = e.pageY - this.offsetTop;
-    }, false);
+    }, false));
 
 
-    canvas.addEventListener('mousedown', function(e) {
+    ['touchstart','mousedown'].forEach(event => canvas.addEventListener(event, function(e) {
         ctx.lineJoin = 'round';
         ctx.lineCap = 'round';
         canvas.addEventListener('mousemove', onPaint, false);
         canvas.addEventListener('mousemove', draw, false);
-    }, false);
+    }, false));
 
-    canvas.addEventListener('mouseup', function() {
+    ['touchend','mouseup'].forEach(event => canvas.addEventListener(event, function() {
         canvas.removeEventListener('mousemove', onPaint, false);
-    }, false);
+    }, false));
 
     
 

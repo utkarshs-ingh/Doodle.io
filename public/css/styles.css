@@ -242,13 +242,13 @@ button:disabled {
         font-size:1rem
     }
     html {
-        zoom: 0.8; 
-        -moz-transform: scale(0.8);
-        -webkit-transform: scale(0.8);
-        transform: scale(0.8);
+        zoom: 0.9; 
+        -moz-transform: scale(0.9);
+        -webkit-transform: scale(0.9);
+        transform: scale(0.9);
     }
     .chat__sidebar {display:none}
     .chat__footer {flex-direction:column}
     .chat__footer form {margin-bottom:10px}
-    .chat__footer button {margin-right:0}
+    .chat__footer button {margin-right:2px}
 }
