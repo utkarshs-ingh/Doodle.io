@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
     }); 
     
     socket.on('gameTime', () => { 
-        let timeLimit = 15;
+        let timeLimit = 60;
         let gameStatus = true; 
 
         let user = users.getUser(socket.id);
