@@ -1,6 +1,6 @@
 var socket = io();
 let gameON = false;
-
+let drawON = true;
 let timeDisplay = document.getElementById('timer');
 
 function timer(timeLeft) {
@@ -8,6 +8,7 @@ function timer(timeLeft) {
     if (timeLeft == -1) {
       timeDisplay.innerHTML = "<i class='far fa-clock' style='font-size:20px'></i>";
       document.querySelector('#game-btn').removeAttribute('disabled');
+      document.querySelector('#message-box').removeAttribute('disabled');
       return;
     } 
     else {
@@ -126,10 +127,17 @@ socket.on('joinMessage', function (message) {
     scrollBottom();
 });
 
-socket.on('gameMessage', function (limit, gameStatus, message) {
+socket.on('gameMessage', function (limit, gameStatus, drawStatus, message) {
     modal(message.text);
     gameON = gameStatus;
+    drawON = drawStatus;
     if(gameON) {
+        if(drawON) {
+            document.querySelector('#message-box').setAttribute("disabled", "disabled");
+        }
+        else if(!drawON) {
+            document.querySelector('#message-box').removeAttribute('disabled');
+        }
         document.querySelector('#game-btn').setAttribute("disabled", "disabled");
         timer(limit);
     }
@@ -144,6 +152,7 @@ socket.on('winMessage', function (message) {
 });
  
 socket.on('canvas-draw', function (data) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     var image = new Image();
     image.onload = function() {
         ctx.drawImage(image, 0, 0, canvas.width, canvas.height);

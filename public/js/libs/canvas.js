@@ -52,11 +52,13 @@ function InitDrawing() {
     ['touchstart','mousedown'].forEach(event => canvas.addEventListener(event, function(e) {
         ctx.lineJoin = 'round';
         ctx.lineCap = 'round';
-        ['touchmove','mousemove'].forEach(event => canvas.addEventListener(event, onPaint, false));
-        ['touchmove','mousemove'].forEach(event => canvas.addEventListener(event, draw, false));
+        if(drawON) {
+            ['touchmove','mousemove'].forEach(event => canvas.addEventListener(event, onPaint, false));
+            ['touchmove','mousemove'].forEach(event => canvas.addEventListener(event, draw, false));
+        }
     }, false));
 
-    ['touchcancel','touchend','mouseup'].forEach(event => canvas.addEventListener(event, function() {
+    ['touchcancel','mouseup'].forEach(event => canvas.addEventListener(event, function() {
         ['touchmove','mousemove'].forEach(event => canvas.removeEventListener(event, onPaint, false));
     }, false));
 

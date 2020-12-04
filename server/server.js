@@ -76,14 +76,14 @@ io.on('connection', (socket) => {
         let currPlayer = users.getUserByName(nextPlayer, user.room);
                 
         if(nextPlayer) {
-            io.to(user.room).emit('gameMessage', timeLimit, gameStatus, generateMessage('Doodle.io', `${nextPlayer} is drawing!!!.....`));
+            io.to(user.room).emit('gameMessage', timeLimit, gameStatus, false, generateMessage('Doodle.io', `${nextPlayer} is drawing!!!.....`));
 
             guessWord =  gameWord();
 
-            io.to(currPlayer.id).emit('gameMessage', timeLimit, gameStatus, generateMessage('Doodle.io', `Draw ${guessWord}`));
+            io.to(currPlayer.id).emit('gameMessage', timeLimit, gameStatus, true, generateMessage('Doodle.io', `Draw ${guessWord}`));
         }
         setTimeout(() => { 
-            io.to(user.room).emit('gameMessage', 0, !gameStatus, generateMessage('Doodle.io', 'Round over...')); 
+            io.to(user.room).emit('gameMessage', 0, !gameStatus, true, generateMessage('Doodle.io', 'Round over...')); 
             
             users.resetScore(user.room);
 
