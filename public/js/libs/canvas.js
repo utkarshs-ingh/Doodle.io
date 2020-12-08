@@ -1,14 +1,21 @@
 window.addEventListener('load', ()=>{ 
+    window.addEventListener('resize', resize); 
     InitDrawing();
 }); 
 
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
-var sketch = document.querySelector('#canvas');
+var sketch = document.getElementById('canvas');
 var sketch_style = getComputedStyle(sketch);
 var canvas_style = getComputedStyle(canvas);
-canvas.width = parseInt(sketch_style.getPropertyValue('width'));
-canvas.height = parseInt(sketch_style.getPropertyValue('height'));
+canvas.width = parseInt(sketch_style.getPropertyValue('width'))-15;
+canvas.height = parseInt(sketch_style.getPropertyValue('height'))-15;
+
+function resize(){ 
+    sketch_style = getComputedStyle(sketch);
+    canvas.width = parseInt(sketch_style.getPropertyValue('width'))-15;
+    canvas.height = parseInt(sketch_style.getPropertyValue('height'))-15;
+} 
 
 var colorInput = document.getElementById('color');
 var clearBtn = document.getElementById('clear');
@@ -44,8 +51,8 @@ function InitDrawing() {
         last_mouse.x = mouse.x;
         last_mouse.y = mouse.y;
 
-        mouse.x = e.pageX - this.offsetLeft;
-        mouse.y = e.pageY - this.offsetTop;
+        mouse.x = e.clientX - canvas.offsetLeft;
+        mouse.y = e.clientY - canvas.offsetTop;
     }, false));
 
 

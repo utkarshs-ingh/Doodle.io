@@ -18,28 +18,32 @@
 
     <div class="modal" id="myModal"></div>
     <div class="chat__main">
-      <div class="canvas" id="canvas">
+      <div class="game_board" id="game_board">
         <div class="timer" id="timer">
           <i class='far fa-clock' style='font-size:15px'></i>
         </div>
-        <div id="palette">
-          <button id="pen"><i class="fas fa-pen"></i></button>
-          <button id="clear"><i class="fas fa-times"></i></button>
-          <button id="erase"><i class="fas fa-eraser"></i></button>
-          <input type="color" id="color">
+        <div class="play_board" id="play_board">
+          <div id="palette">
+            <button id="pen"><i class="fas fa-pen"></i></button>
+            <button id="clear"><i class="fas fa-times"></i></button>
+            <button id="erase"><i class="fas fa-eraser"></i></button>
+            <input type="color" id="color">
+          </div>
+          <div class="canvas" id="canvas">
+            <canvas class="myCanvas" id="myCanvas" style="border:2px solid black" ></canvas>
+          </div>
+          <div class="chat__box">
+            <ol id="messages" class="chat__messages"></ol>
+          </div>
         </div>
-        <canvas class="myCanvas" id="myCanvas" style="border:2px solid black"></canvas>
+        <div class="chat__footer">
+          <form id="message-form">
+            <input id="message-box" type="text" placeholder="Message" autofocus autocomplete="off"/>
+            <button id="submit-btn">Send</button>
+            <button id="game-btn">start</button>
+          </form>
+        </div>
       </div>
-      <ol id="messages" class="chat__messages"></ol>
-
-      <div class="chat__footer">
-        <form id="message-form">
-          <input id="message-box" type="text" placeholder="Message" autofocus autocomplete="off"/>
-          <button id="submit-btn">Send</button>
-          <button id="game-btn">start</button>
-        </form>
-      </div>
-    
 
     <script id="message-template" type="text/template">
       <li class="message">

@@ -103,7 +103,7 @@ socket.on('UpdateUserList', function (users) {
 socket.on('newMessage', function (message) {
 
     const div = messageValue(message);
-    div.setAttribute("style", "border-radius: 5px;background: lightgray; width: 300px; margin-top: 5px;");
+    div.setAttribute("style", "border-radius: 5px;background: lightgray; width: 300px; margin-top: 5px; word-wrap: break-word; word-wrap: break-word;  ");
     let msg = document.querySelector('#messages');
     msg.appendChild(div);
     scrollBottom();
@@ -112,7 +112,7 @@ socket.on('newMessage', function (message) {
 socket.on('leaveMessage', function (message) {
     
     const div = messageValue(message);
-    div.setAttribute("style", "border-radius: 5px;background: red; width: 300px; margin-top: 5px;");
+    div.setAttribute("style", "border-radius: 5px;background: red; width: 300px; margin-top: 5px; word-wrap: break-word;");
     let msg = document.querySelector('#messages');
     msg.appendChild(div);
     scrollBottom();
@@ -121,7 +121,7 @@ socket.on('leaveMessage', function (message) {
 socket.on('joinMessage', function (message) {
     
     const div = messageValue(message);
-    div.setAttribute("style", "border-radius: 5px;background: lightgreen; width: 300px; margin-top: 5px;");
+    div.setAttribute("style", "border-radius: 5px;background: lightgreen; width: 300px; margin-top: 5px; word-wrap: break-word;");
     let msg = document.querySelector('#messages');
     msg.appendChild(div);
     scrollBottom();
@@ -145,7 +145,7 @@ socket.on('gameMessage', function (limit, gameStatus, drawStatus, message) {
 
 socket.on('winMessage', function (message) {
     const div = messageValue(message);
-    div.setAttribute("style", "border-radius: 5px;background: yellow; width: 300px; margin-top: 5px;");
+    div.setAttribute("style", "border-radius: 5px;background: yellow; width: 300px; margin-top: 5px; word-wrap: break-word;");
     let msg = document.querySelector('#messages');
     msg.appendChild(div);
     scrollBottom();
