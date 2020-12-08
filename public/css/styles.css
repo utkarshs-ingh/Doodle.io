@@ -126,7 +126,7 @@ button:disabled {
     height: 100%;
 }
 .myCanvas {
-    background: linear-gradient(to right, white , rgb(221, 209, 209));
+    background: white;
     text-align: center;
     padding: 5px;
     cursor: crosshair;
