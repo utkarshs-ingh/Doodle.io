@@ -18,7 +18,7 @@ function timer(timeLeft) {
 } 
 
 function scrollBottom() {
-    const elem = document.querySelector('#messages');
+    const elem = document.querySelector('#chat__box');
     const scrollDiff = (elem.scrollHeight - elem.scrollTop) - elem.clientHeight;
 
     if (scrollDiff < 450) {
